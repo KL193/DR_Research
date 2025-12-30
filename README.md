@@ -13,3 +13,20 @@ Explainable AI (XAI): * Grad-CAM: Visual heatmaps to identify retinal lesions (e
 SHAP: Quantifies the impact of clinical metadata versus visual features on the final diagnosis.
 
 Production-Ready Pipeline: Includes Early Stopping, Learning Rate Scheduling, and Stratified K-Fold validation.
+
+# 🏗️ Architecture Overview
+# The system operates in three distinct stages:
+
+Feature Extraction (Base Learners): Five models process the data in parallel:
+
+EfficientNet-B0 & EfficientNet-B3: Image-only experts.
+
+FusionModel (ResNet50 + MLP): Combined image and metadata expert.
+
+MetaFCNN: Tabular data expert.
+
+CustomCNN: Structural diversity baseline.
+
+The Stack (Meta-Learner): An XGBoost model trained on the Out-of-Fold (OOF) predictions from the base learners to produce the final DR grade (0-4).
+
+Explanation: Post-hoc analysis using Grad-CAM and SHAP values for clinical validation.
